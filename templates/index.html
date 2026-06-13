@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="color-scheme" content="dark" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3956390078338144" crossorigin="anonymous"></script>
+  <title>KickGet — Kick.com Clip &amp; VOD Downloader</title>
+  <meta name="description" content="Download Kick.com clips, VODs, and live streams instantly. Free, fast, no signup required." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://kickget-production.up.railway.app/" />
+  <!-- Google Search Console verification: replace REPLACE_ME with your token -->
+  <meta name="google-site-verification" content="REPLACE_ME" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"KickGet","url":"https://kickget-production.up.railway.app/","applicationCategory":"MultimediaApplication","operatingSystem":"Any","description":"Download Kick.com clips, VODs, and live streams for free.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <meta property="og:title" content="KickGet — Kick.com Downloader" />
+  <meta property="og:description" content="Download Kick clips, VODs, and live streams." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2353FC18'/%3E%3Cpath d='M16 14h10v15l13-15h12l-15 17 16 19H40L26 33v15H16z' fill='%23000'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2353FC18'/%3E%3Cpath d='M16 14h10v15l13-15h12l-15 17 16 19H40L26 33v15H16z' fill='%23000'/%3E%3C/svg%3E" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    button { font-family: inherit; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #131313;
+      --surface2:  #1c1c1c;
+      --surface3:  #262626;
+      --border:    #2a2a2a;
+      --border2:   #3a3a3a;
+      --kick:      #53FC18;
+      --kick-dim:  #3fb812;
+      --accent:    #ff3344;
+      --success:   #10b981;
+      --danger:    #ef4444;
+      --text:      #ffffff;
+      --text2:     #a8a8a8;
+      --muted:     #555555;
+      --radius:    18px;
+      --radius-sm: 12px;
+      --max-w:     680px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-left:  env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(83,252,24,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(83,252,24,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none; z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; top: -15%; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(83,252,24,0.14) 0%, rgba(83,252,24,0.04) 40%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    header, main, footer { position: relative; z-index: 1; }
+
+    header {
+      padding: clamp(10px,2vw,18px) 16px 0;
+      padding-top: max(clamp(10px,2vw,18px), env(safe-area-inset-top));
+      text-align: center;
+    }
+
+    .logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: var(--kick);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 22px rgba(83,252,24,0.4);
+      flex-shrink: 0;
+      font-weight: 900;
+      color: #000;
+      font-size: 1.45rem;
+      letter-spacing: -0.04em;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .logo-text {
+      font-size: clamp(1.1rem,3vw,1.4rem);
+      font-weight: 900; letter-spacing: -0.04em; color: var(--text);
+    }
+
+    .logo-text span { color: var(--kick); }
+
+    nav {
+      display: flex; justify-content: center; gap: 6px;
+      padding: 14px 16px 0; flex-wrap: wrap;
+    }
+
+    .nav-pill {
+      font-size: .78rem; font-weight: 700; color: var(--text2);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 100px; padding: 5px 14px; cursor: pointer;
+      transition: all .18s;
+    }
+    .nav-pill.active { background: var(--kick); color: #000; border-color: var(--kick); }
+    @media (hover: hover) {
+      .nav-pill:hover { background: var(--kick); color: #000; border-color: var(--kick); }
+    }
+
+    main {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center;
+      padding: clamp(20px, 4vw, 48px) clamp(14px, 3vw, 24px) 40px;
+      gap: clamp(18px, 3vw, 28px);
+      max-width: var(--max-w);
+      margin: 0 auto; width: 100%;
+    }
+
+    /* Tablet */
+    @media (min-width: 720px) {
+      :root { --max-w: 720px; }
+    }
+
+    /* Desktop — side-by-side */
+    @media (min-width: 1024px) {
+      :root { --max-w: 1080px; }
+      main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "hero hero"
+          "card result"
+          "howto howto";
+        gap: 28px 32px;
+        align-items: start;
+      }
+      .hero        { grid-area: hero; text-align: center; }
+      main > .card { grid-area: card; }
+      .result-card { grid-area: result; align-self: start; }
+      .howto       { grid-area: howto; max-width: 720px; margin: 0 auto; }
+      .hero p      { font-size: 1.08rem; }
+      .result-card { display: block; visibility: hidden; min-height: 200px; }
+      .result-card.shown { visibility: visible; min-height: 0; }
+    }
+
+    /* Ultra-wide */
+    @media (min-width: 1440px) { :root { --max-w: 1200px; } }
+
+    /* Tiny phones */
+    @media (max-width: 360px) {
+      main { padding: 16px 12px 32px; gap: 16px; }
+      .card { padding: 16px; }
+      .hero h1 { font-size: 1.55rem; }
+    }
+
+    /* Landscape phones */
+    @media (max-height: 500px) and (orientation: landscape) {
+      header { padding-top: 6px; }
+      .hero h1 { font-size: 1.4rem; margin-bottom: 4px; }
+      .hero p { font-size: .82rem; }
+      main { gap: 12px; padding-top: 12px; }
+    }
+
+    .hero { text-align: center; }
+
+    .hero h1 {
+      font-size: clamp(1.7rem,5vw,2.6rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--kick);
+    }
+
+    .hero p {
+      font-size: clamp(.88rem,2.5vw,1rem);
+      color: var(--text2); line-height: 1.6;
+    }
+
+    .card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .input-row { display: flex; gap: 10px; }
+
+    .url-input {
+      flex: 1; min-width: 0;
+      background: var(--surface2);
+      border: 1.5px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: inherit; font-size: 16px;
+      padding: 13px 16px;
+      outline: none; transition: border-color .2s;
+      min-height: 48px;
+      width: 100%;
+      -webkit-appearance: none; appearance: none;
+    }
+    .url-input::placeholder { color: var(--muted); }
+    .url-input:focus { border-color: var(--kick); }
+
+    .paste-btn {
+      background: var(--surface3);
+      border: 1.5px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text2); font-family: inherit;
+      font-size: .85rem; font-weight: 700;
+      padding: 0 16px; cursor: pointer;
+      white-space: nowrap; transition: all .18s;
+      flex-shrink: 0; min-height: 48px;
+    }
+    @media (hover: hover) {
+      .paste-btn:hover { border-color: var(--kick); color: var(--kick); }
+    }
+
+    .fetch-btn {
+      width: 100%; padding: 14px; min-height: 52px;
+      background: var(--kick);
+      border: none; border-radius: var(--radius-sm);
+      color: #000; font-family: inherit;
+      font-size: 1rem; font-weight: 900;
+      cursor: pointer; transition: opacity .18s, transform .12s;
+      letter-spacing: -0.01em;
+    }
+    @media (hover: hover) { .fetch-btn:hover { opacity: .88; } }
+    .fetch-btn:active { transform: scale(.98); }
+    .fetch-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .fmt-row { display: flex; gap: 8px; }
+    .fmt-btn {
+      flex: 1;
+      background: var(--surface2);
+      border: 1.5px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text2); font-family: inherit;
+      font-size: .85rem; font-weight: 700;
+      padding: 10px; cursor: pointer;
+      transition: all .18s;
+      min-height: 44px;
+    }
+    .fmt-btn.active {
+      background: var(--kick); color: #000; border-color: var(--kick);
+    }
+
+    .result-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: none;
+    }
+
+    .result-thumb-wrap {
+      position: relative; width: 100%;
+      background: #000;
+    }
+    .result-thumb {
+      width: 100%; max-height: 360px;
+      object-fit: contain; display: block;
+    }
+    .play-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .play-circle {
+      width: 56px; height: 56px;
+      background: rgba(83,252,24,.92);
+      color: #000;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 900;
+      box-shadow: 0 4px 22px rgba(0,0,0,.6);
+    }
+    .live-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--accent); color: #fff;
+      font-size: .7rem; font-weight: 900;
+      letter-spacing: .08em;
+      padding: 3px 8px; border-radius: 4px;
+      display: none;
+    }
+    .live-badge.on { display: inline-block; animation: livepulse 1.6s ease-in-out infinite; }
+    @keyframes livepulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+
+    .result-info {
+      padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .result-title {
+      font-size: .95rem; font-weight: 700;
+      line-height: 1.4; color: var(--text);
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .result-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .meta-chip {
+      font-size: .75rem; font-weight: 700;
+      color: var(--text2);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 100px; padding: 4px 10px;
+    }
+    .meta-chip.kind { background: var(--kick); color: #000; border-color: var(--kick); }
+    .meta-chip.warn { background: rgba(239,68,68,.12); color: #fca5a5; border-color: rgba(239,68,68,.3); }
+
+    .dl-btn {
+      width: 100%; padding: 13px; min-height: 48px;
+      background: var(--kick);
+      border: none; border-radius: var(--radius-sm);
+      color: #000; font-family: inherit;
+      font-size: .95rem; font-weight: 900;
+      cursor: pointer; transition: opacity .18s, transform .12s;
+    }
+    @media (hover: hover) { .dl-btn:hover { opacity: .88; } }
+    .dl-btn:active { transform: scale(.98); }
+    .dl-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .progress-wrap {
+      display: none; flex-direction: column; gap: 8px;
+    }
+    .progress-bar-bg {
+      width: 100%; height: 6px;
+      background: var(--surface3);
+      border-radius: 100px; overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--kick), var(--kick-dim));
+      border-radius: 100px;
+      transition: width .3s ease;
+      width: 0%;
+    }
+    .progress-label {
+      font-size: .8rem; color: var(--text2); font-weight: 700;
+      text-align: center;
+    }
+
+    .error-box {
+      display: none;
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: .88rem; color: #fca5a5;
+      font-weight: 600;
+    }
+
+    .howto {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+    .howto h2 {
+      font-size: .95rem; font-weight: 800;
+      color: var(--kick); margin-bottom: 10px;
+      letter-spacing: -.01em;
+    }
+    .howto ol {
+      padding-left: 22px;
+      color: var(--text2); font-size: .85rem; line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px 32px;
+      padding-bottom: max(32px, env(safe-area-inset-bottom));
+      font-size: .78rem; color: var(--muted);
+      position: relative; z-index: 1;
+    }
+
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,.3);
+      border-top-color: #000; border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    .spinner-light {
+      border: 2px solid rgba(255,255,255,.25);
+      border-top-color: #fff;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">
+    <div class="logo-icon">K</div>
+    <div class="logo-text">Kick<span>Get</span></div>
+  </a>
+  <nav>
+    <button type="button" class="nav-pill active">Kick.com</button>
+    <button type="button" class="nav-pill" onclick="window.location.href='https://snapget-production.up.railway.app'">Snapchat</button>
+    <button type="button" class="nav-pill" onclick="window.location.href='https://tweetget-production.up.railway.app'">Twitter / X</button>
+    <button type="button" class="nav-pill" onclick="window.location.href='https://sunny-creation-production-05bc.up.railway.app'">Instagram</button>
+  </nav>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Download <em>Kick.com</em> Clips &amp; VODs</h1>
+    <p>Paste any clip, VOD, or live channel link — get the video in seconds. Free, fast, no signup.</p>
+  </div>
+
+  <div class="card">
+    <div class="input-row">
+      <input class="url-input" id="urlInput" type="url"
+             inputmode="url" enterkeyhint="go"
+             autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+             placeholder="https://kick.com/<user>/clips/..." aria-label="Kick URL" />
+      <button type="button" class="paste-btn" onclick="pasteUrl()">Paste</button>
+    </div>
+
+    <div class="fmt-row" role="group" aria-label="Output format">
+      <button type="button" class="fmt-btn active" data-fmt="mp4" onclick="setFmt('mp4')">🎬 MP4 Video</button>
+      <button type="button" class="fmt-btn" data-fmt="mp3" onclick="setFmt('mp3')">🎵 MP3 Audio</button>
+    </div>
+
+    <div class="error-box" id="errorBox" role="alert" aria-live="polite"></div>
+
+    <button type="button" class="fetch-btn" id="fetchBtn" onclick="fetchInfo()">
+      Get Video
+    </button>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-thumb-wrap" id="thumbWrap" style="display:none">
+      <div class="live-badge" id="liveBadge">● LIVE</div>
+      <img class="result-thumb" id="thumbImg" src="" alt="thumbnail" />
+      <div class="play-overlay" id="playOverlay">
+        <div class="play-circle">▶</div>
+      </div>
+    </div>
+    <div class="result-info">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-meta" id="resultMeta"></div>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar-bg">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">Preparing…</div>
+      </div>
+      <button type="button" class="dl-btn" id="dlBtn" onclick="startDownload()">
+        ⬇ Download
+      </button>
+    </div>
+  </div>
+
+  <div class="howto">
+    <h2>How to use KickGet</h2>
+    <ol>
+      <li>Open <strong>kick.com</strong> and copy a clip, VOD, or channel link.</li>
+      <li>Paste it above and tap <strong>Get Video</strong>.</li>
+      <li>Pick MP4 or MP3, then tap <strong>Download</strong> — saves straight to your device.</li>
+    </ol>
+    <p style="margin-top:10px;font-size:.78rem;color:var(--muted);">
+      Live streams are recorded for up to 5 minutes from the time you click download.
+      Subscriber-only content can't be downloaded.
+    </p>
+  </div>
+</main>
+
+<footer>
+  © 2026 KickGet &nbsp;·&nbsp; For personal use only &nbsp;·&nbsp;
+  <a href="https://twitter.com/KhaledQ84Ever" target="_blank" rel="noopener"
+     style="color:var(--kick);text-decoration:none;font-weight:700;">@KhaledQ84Ever</a>
+</footer>
+
+<script>
+  let currentFmt  = 'mp4';
+  let currentInfo = null;
+  let pollTimer   = null;
+
+  function setFmt(f) {
+    currentFmt = f;
+    document.querySelectorAll('.fmt-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.fmt === f);
+    });
+    const dl = document.getElementById('dlBtn');
+    if (!dl.disabled) {
+      dl.textContent = f === 'mp3' ? '⬇ Download MP3' : '⬇ Download MP4';
+    }
+  }
+
+  async function pasteUrl() {
+    try {
+      const t = await navigator.clipboard.readText();
+      document.getElementById('urlInput').value = t.trim();
+    } catch {
+      document.getElementById('urlInput').focus();
+    }
+  }
+
+  function showError(msg) {
+    const b = document.getElementById('errorBox');
+    b.textContent = msg; b.style.display = 'block';
+  }
+  function clearError() {
+    document.getElementById('errorBox').style.display = 'none';
+  }
+
+  async function fetchInfo() {
+    clearError();
+    const url = document.getElementById('urlInput').value.trim();
+    if (!url) { showError('Please paste a Kick URL first.'); return; }
+
+    const btn = document.getElementById('fetchBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Fetching…';
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('resultCard').classList.remove('shown');
+
+    try {
+      const r = await fetch('/info', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({url})
+      });
+      const data = await r.json();
+      if (!r.ok || data.error) { showError(data.error || 'Could not fetch.'); return; }
+
+      currentInfo = data;
+
+      document.getElementById('resultTitle').textContent = data.title || 'Kick video';
+
+      const meta = document.getElementById('resultMeta');
+      meta.innerHTML = '';
+      if (data.kind) {
+        const label = data.kind === 'clip' ? '🎞 Clip'
+                    : data.kind === 'vod'  ? '📼 VOD'
+                    :                        '🔴 Live';
+        meta.innerHTML += `<span class="meta-chip kind">${label}</span>`;
+      }
+      if (data.uploader) meta.innerHTML += `<span class="meta-chip">@${data.uploader}</span>`;
+      if (data.duration && data.duration !== '—') meta.innerHTML += `<span class="meta-chip">⏱ ${data.duration}</span>`;
+      if (data.too_long) meta.innerHTML += `<span class="meta-chip warn">⚠ Long VOD — first 60min only</span>`;
+
+      const tw   = document.getElementById('thumbWrap');
+      const live = document.getElementById('liveBadge');
+      live.classList.toggle('on', !!data.is_live);
+      if (data.thumbnail) {
+        document.getElementById('thumbImg').src = data.thumbnail;
+        document.getElementById('thumbImg').style.display = 'block';
+        tw.style.display = 'block';
+      } else {
+        tw.style.display = 'none';
+      }
+
+      document.getElementById('progressWrap').style.display = 'none';
+      const dlBtn = document.getElementById('dlBtn');
+      dlBtn.disabled = false;
+      dlBtn.style.opacity = '';
+      const base = currentFmt === 'mp3' ? '⬇ Download MP3' : '⬇ Download MP4';
+      dlBtn.textContent = data.is_live ? '⬇ Record next 5 min' : base;
+
+      const rc = document.getElementById('resultCard');
+      rc.style.display = 'block';
+      rc.classList.add('shown');
+
+    } catch {
+      showError('Network error. Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Get Video';
+    }
+  }
+
+  async function triggerDownload(jobId, filename, btn) {
+    try {
+      const resp = await fetch(`/download/${jobId}`);
+      if (!resp.ok) throw new Error('download failed');
+      const blob = await resp.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'kick.mp4';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+    } catch {
+      showError('Could not save file. Try again.');
+    } finally {
+      resetBtn(btn);
+    }
+  }
+
+  async function startDownload() {
+    if (!currentInfo) return;
+    clearError();
+
+    const activeBtn = document.getElementById('dlBtn');
+    activeBtn.disabled = true;
+    activeBtn.innerHTML = '<span class="spinner spinner-light"></span>Preparing…';
+
+    document.getElementById('progressWrap').style.display = 'flex';
+    setProgress(5, 'Starting…');
+
+    try {
+      const r = await fetch('/start', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          url:    currentInfo.url,
+          title:  currentInfo.title,
+          format: currentFmt
+        })
+      });
+      const data = await r.json();
+      if (!r.ok || data.error) {
+        showError(data.error || 'Failed to start.');
+        resetBtn(activeBtn);
+        return;
+      }
+
+      pollStatus(data.job_id, activeBtn);
+
+    } catch {
+      showError('Network error. Please try again.');
+      resetBtn(activeBtn);
+    }
+  }
+
+  function setProgress(pct, label) {
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = label;
+  }
+
+  function pollStatus(jobId, activeBtn) {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(async () => {
+      try {
+        const r    = await fetch(`/status/${jobId}`);
+        const data = await r.json();
+
+        if (data.status === 'processing' || data.status === 'pending') {
+          const pct = data.progress || 0;
+          const label = currentInfo.is_live
+            ? (pct < 90 ? 'Recording stream…' : 'Finalizing…')
+            : (pct < 30 ? 'Fetching…' : pct < 80 ? 'Downloading…' : 'Finalizing…');
+          setProgress(pct, label);
+        } else if (data.status === 'done') {
+          clearInterval(pollTimer);
+          setProgress(100, 'Saving…');
+          activeBtn.innerHTML = '<span class="spinner spinner-light"></span>Saving…';
+          triggerDownload(jobId, data.filename, activeBtn);
+        } else if (data.status === 'error') {
+          clearInterval(pollTimer);
+          showError(data.error || 'Download failed.');
+          resetBtn(activeBtn);
+        }
+      } catch {
+        clearInterval(pollTimer);
+        showError('Connection lost. Please try again.');
+        resetBtn(activeBtn);
+      }
+    }, 1200);
+  }
+
+  function resetBtn(btn) {
+    if (!btn) return;
+    btn.disabled = false;
+    btn.style.opacity = '';
+    const base = currentFmt === 'mp3' ? '⬇ Download MP3' : '⬇ Download MP4';
+    btn.textContent = (currentInfo && currentInfo.is_live) ? '⬇ Record next 5 min' : base;
+    document.getElementById('progressWrap').style.display = 'none';
+  }
+
+  document.getElementById('urlInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') fetchInfo();
+  });
+</script>
+</body>
+</html>

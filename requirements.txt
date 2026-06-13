@@ -1,0 +1,7 @@
+flask
+flask-cors
+requests
+gunicorn
+yt-dlp
+static-ffmpeg
+curl_cffi>=0.10,<0.15
